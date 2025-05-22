@@ -84,7 +84,7 @@ The step Remove Small Regions involves eliminating small, scattered areas that a
 * Yellow: Vessels that are correctly identified
   
 <p align=center>
-<img src="https://github.com/falakian/Retinal-Vessel-Segmentation/blob/main/report/01_report.png">
+<img src="comparison.png">
 </p>
 
 ## Final Results
