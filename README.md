@@ -1,11 +1,8 @@
 # My Additions
 
 - I ported the original MATLAB vessel segmentation pipeline to Python, ensuring all steps and logic were preserved.
-- I implemented multiple vessel segmentation strategies, including an ensemble approach that combines classical and advanced vesselness filtering (Frangi) for maximum sensitivity.
-- I tuned the pipeline to achieve a better balance between sensitivity, specificity, and accuracy than the original MATLAB code, using aggressive postprocessing and parameter sweeps.
-- I automated batch evaluation for all DRIVE test images, generating per-image and average metrics in both CSV and Excel formats.
-- I cleaned up and productionized the code, removing comments and making it ready for reproducible research or deployment.
-- I fixed and improved the README, including image display and documentation, to make the project more accessible and professional.
+- Implemented multiple vessel segmentation strategies, including an ensemble approach that combines classical and advanced vesselness filtering (Frangi) for maximum sensitivity.
+- Tuned the pipeline to achieve a better balance between sensitivity, specificity, and accuracy than the original MATLAB code, using aggressive postprocessing and parameter sweeps.
 
 # Introduction
 This project focuses on developing a system to extract blood vessels from retinal images in the DRIVE (Digital Retinal Images for Vessel Extraction) dataset. Accurate extraction of blood vessels is crucial for diagnosing and researching various eye conditions, such as diabetic retinopathy. By applying advanced image processing techniques, this system aims to enhance the analysis of retinal images, providing a valuable tool for medical professionals and researchers in the field of ophthalmology.
