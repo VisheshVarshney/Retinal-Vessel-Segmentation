@@ -88,20 +88,13 @@ The step Remove Small Regions involves eliminating small, scattered areas that a
 </p>
 
 ## Final Results
-My results for 20 test images:
-
-<p align=center>
-<img src="https://github.com/falakian/Retinal-Vessel-Segmentation/blob/main/Step-by-step%20images/result.png">
-</p>
-
----
-
-## My Python Results for 20 Test Images
+My Python Results for 20 Test Images
 <p align=center>
 <img src="image.png">
 </p>
 
-## Old MATLAB Result for 20 Test Images
+Old MATLAB Results for 20 test images:
+
 <p align=center>
-<img src="matlab_result.png">
+<img src="https://github.com/falakian/Retinal-Vessel-Segmentation/blob/main/Step-by-step%20images/result.png">
 </p>
