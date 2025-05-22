@@ -18,7 +18,7 @@ This project focuses on developing a system to extract blood vessels from retina
       <th>Mask Image</th>
     </tr>
     <tr>
-      <td><img src="https://github.com/falakian/Retinal-Vessel-Segmentation/blob/main/Step-by-step%20images/original_image.png" alt="Original Image" /></td>
+      <td><img src="https://github.com/falakian/Retinal-Vessel-Segmentation/blob/main/Step-by-step%20images/original.png" alt="Original Image" /></td>
       <td><img src="https://github.com/falakian/Retinal-Vessel-Segmentation/blob/main/Step-by-step%20images/01_test_mask.gif" alt="Mask Image" /></td>
     </tr>
   </table>
