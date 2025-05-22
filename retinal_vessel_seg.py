@@ -14,7 +14,8 @@ from PIL import Image
 def segment_retinal_vessels(image_path, mask_path=None):
     img = cv2.imread(image_path)
     if img is None:
-        raise ValueError(f"Could not read image from {image_path}")
+        print(f"Can't open image: {image_path}")
+        raise ValueError(f"Can't open image: {image_path}")
     green_channel = img[:,:,1]
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
     enhanced = clahe.apply(green_channel)
@@ -47,7 +48,8 @@ def segment_retinal_vessels(image_path, mask_path=None):
 def improved_segment_retinal_vessels(image_path, mask_path=None):
     img = cv2.imread(image_path)
     if img is None:
-        raise ValueError(f"Could not read image from {image_path}")
+        print(f"Can't open image: {image_path}")
+        raise ValueError(f"Can't open image: {image_path}")
     green_channel = img[:,:,1]
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
     enhanced = clahe.apply(green_channel)
@@ -79,7 +81,8 @@ def ensemble_segment_retinal_vessels(image_path, mask_path=None):
     mask1 = segment_retinal_vessels(image_path, mask_path)
     img = cv2.imread(image_path)
     if img is None:
-        raise ValueError(f"Could not read image from {image_path}")
+        print(f"Can't open image: {image_path}")
+        raise ValueError(f"Can't open image: {image_path}")
     green_channel = img[:,:,1]
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
     enhanced = clahe.apply(green_channel)
@@ -123,20 +126,36 @@ def calculate_metrics(predicted, ground_truth):
         'f1_score': f1
     }
 
+def create_comparison_image(segmented_mask, ground_truth):
+    seg = segmented_mask.astype(bool)
+    gt = ground_truth.astype(bool)
+    h, w = seg.shape
+    comp_img = np.zeros((h, w, 3), dtype=np.uint8)
+    comp_img[~seg & gt, 1] = 255
+    comp_img[seg & ~gt, 0] = 255
+    comp_img[seg & gt, 0] = 255
+    comp_img[seg & gt, 1] = 255
+    return comp_img
+
 def visualize_results(original_img, segmented_mask, ground_truth=None):
     if ground_truth is not None:
-        plt.figure(figsize=(15, 5))
-        plt.subplot(131)
+        comp_img = create_comparison_image(segmented_mask, ground_truth)
+        plt.figure(figsize=(20, 5))
+        plt.subplot(141)
         plt.imshow(cv2.cvtColor(original_img, cv2.COLOR_BGR2RGB))
         plt.title('Original Image')
         plt.axis('off')
-        plt.subplot(132)
+        plt.subplot(142)
         plt.imshow(segmented_mask, cmap='gray')
         plt.title('Segmented Vessels')
         plt.axis('off')
-        plt.subplot(133)
+        plt.subplot(143)
         plt.imshow(ground_truth, cmap='gray')
         plt.title('Ground Truth')
+        plt.axis('off')
+        plt.subplot(144)
+        plt.imshow(comp_img)
+        plt.title('Comparison (G=Missed, R=FP, Y=Correct)')
         plt.axis('off')
         plt.tight_layout()
         plt.show()
@@ -165,12 +184,12 @@ def load_ground_truth(gt_path):
         gt_binary = (gt_array > 0).astype(np.uint8)
         return gt_binary
     except Exception as e:
-        print(f"Error loading ground truth image: {str(e)}")
+        print("Couldn't load ground truth.")
         return None
 
 def list_available_images(directory="DRIVE/test/images"):
     if not os.path.exists(directory):
-        print(f"Directory {directory} does not exist!")
+        print(f"No directory: {directory}")
         return []
     image_files = []
     for ext in ['*.tif', '*.tiff', '*.png', '*.jpg', '*.jpeg']:
@@ -188,14 +207,14 @@ def main():
         if args.interactive:
             available_images = list_available_images()
             if not available_images:
-                print("No images found in DRIVE/test/images directory!")
+                print("No images found.")
                 return
             print("\nAvailable images:")
             for i, img_path in enumerate(available_images, 1):
                 print(f"{i}. {os.path.basename(img_path)}")
             while True:
                 try:
-                    choice = int(input("\nEnter the number of the image you want to process (or 0 to exit): "))
+                    choice = int(input("\nPick an image number (or 0 to exit): "))
                     if choice == 0:
                         return
                     if 1 <= choice <= len(available_images):
@@ -204,13 +223,13 @@ def main():
                         number = base_name.split('_')[0]
                         mask_path = os.path.join('DRIVE', 'test', 'mask', f'{number}_test_mask.gif')
                         if not os.path.exists(mask_path):
-                            print(f"Warning: Mask file not found at {mask_path}")
+                            print(f"No mask at {mask_path}")
                             mask_path = None
                         break
                     else:
-                        print("Invalid choice! Please try again.")
+                        print("Invalid choice.")
                 except ValueError:
-                    print("Please enter a valid number!")
+                    print("Enter a number.")
         elif args.image:
             image_path = args.image
             if args.mask:
@@ -220,14 +239,15 @@ def main():
                 number = base_name.split('_')[0]
                 mask_path = os.path.join('DRIVE', 'test', 'mask', f'{number}_test_mask.gif')
                 if not os.path.exists(mask_path):
-                    print(f"Warning: Mask file not found at {mask_path}")
+                    print(f"No mask at {mask_path}")
                     mask_path = None
         else:
-            print("Please either provide an image path using --image or run in interactive mode using --interactive")
+            print("Give an image path or use --interactive.")
             return
         original_img = cv2.imread(image_path)
         if original_img is None:
-            raise ValueError(f"Could not read image from {image_path}")
+            print(f"Can't open image: {image_path}")
+            raise ValueError(f"Can't open image: {image_path}")
         segmented_mask = ensemble_segment_retinal_vessels(image_path, mask_path)
         ground_truth = None
         if not args.no_ground_truth:
@@ -235,12 +255,12 @@ def main():
             if os.path.exists(gt_path):
                 ground_truth = load_ground_truth(gt_path)
                 if ground_truth is None:
-                    print(f"Warning: Could not read ground truth image from {gt_path}")
+                    print(f"Can't read ground truth at {gt_path}")
             else:
-                print(f"Warning: Ground truth image not found at {gt_path}")
+                print(f"No ground truth at {gt_path}")
         visualize_results(original_img, segmented_mask, ground_truth)
     except Exception as e:
-        print(f"Error: {str(e)}")
+        print("Something went wrong.")
         import traceback
         traceback.print_exc()
 
