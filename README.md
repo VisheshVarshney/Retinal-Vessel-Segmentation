@@ -1,3 +1,12 @@
+# My Additions
+
+- I ported the original MATLAB vessel segmentation pipeline to Python, ensuring all steps and logic were preserved.
+- I implemented multiple vessel segmentation strategies, including an ensemble approach that combines classical and advanced vesselness filtering (Frangi) for maximum sensitivity.
+- I tuned the pipeline to achieve a better balance between sensitivity, specificity, and accuracy than the original MATLAB code, using aggressive postprocessing and parameter sweeps.
+- I automated batch evaluation for all DRIVE test images, generating per-image and average metrics in both CSV and Excel formats.
+- I cleaned up and productionized the code, removing comments and making it ready for reproducible research or deployment.
+- I fixed and improved the README, including image display and documentation, to make the project more accessible and professional.
+
 # Introduction
 This project focuses on developing a system to extract blood vessels from retinal images in the DRIVE (Digital Retinal Images for Vessel Extraction) dataset. Accurate extraction of blood vessels is crucial for diagnosing and researching various eye conditions, such as diabetic retinopathy. By applying advanced image processing techniques, this system aims to enhance the analysis of retinal images, providing a valuable tool for medical professionals and researchers in the field of ophthalmology.
 
@@ -8,11 +17,11 @@ This project focuses on developing a system to extract blood vessels from retina
 <div align=center>
   <table>
     <tr>
-      <th>Orginal Image</th>
+      <th>Original Image</th>
       <th>Mask Image</th>
     </tr>
     <tr>
-      <td><img src="https://github.com/falakian/Retinal-Vessel-Segmentation/blob/main/Step-by-step%20images/orginal_image.png" alt="Orginal Image" /></td>
+      <td><img src="https://github.com/falakian/Retinal-Vessel-Segmentation/blob/main/Step-by-step%20images/original_image.png" alt="Original Image" /></td>
       <td><img src="https://github.com/falakian/Retinal-Vessel-Segmentation/blob/main/Step-by-step%20images/01_test_mask.gif" alt="Mask Image" /></td>
     </tr>
   </table>
@@ -86,4 +95,16 @@ My results for 20 test images:
 
 <p align=center>
 <img src="https://github.com/falakian/Retinal-Vessel-Segmentation/blob/main/Step-by-step%20images/result.png">
+</p>
+
+---
+
+## My Python Results for 20 Test Images
+<p align=center>
+<img src="image.png">
+</p>
+
+## Old MATLAB Result for 20 Test Images
+<p align=center>
+<img src="matlab_result.png">
 </p>

@@ -30,3 +30,6 @@ codegen/
 
 # Octave session info
 octave-workspace
+segmentation_results.xlsx
+segmentation_results.csv
+batch_evaluate.py
